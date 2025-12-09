@@ -39,7 +39,7 @@ default_idx = tool_map.get(str(target_tool).lower(), 0)
 # ==============================================================================
 # 화면 분할 및 실행
 # ==============================================================================
-left_col, right_col = st.columns([2, 8], gap="medium")
+left_col, right_col = st.columns([3, 7], gap="medium")
 
 with left_col:
     st.write("") 
