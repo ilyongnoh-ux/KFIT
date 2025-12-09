@@ -32,16 +32,16 @@ with col_nav2: st.page_link("pages/Service.py", label="Service", use_container_w
 # 메인 타이틀
 st.markdown("""
     <div style="text-align: center; margin-top: 150px; margin-bottom: 30px;">
-        <h1 style="color: white; font-size: 5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: 800;">Future of Finance</h1>
-        <h3 style="color: #eee; font-size: 2.2rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); font-weight: 400;">기술로 연결된 새로운 금융 세상</h3>
+        <h1 style="color: white; font-size: 5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: 800;">Bridge the Gap</h1>
+        <h3 style="color: #eee; font-size: 3rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); font-weight: 400;">기술로 연결된 새로운 금융 세상</h3
     </div>
 """, unsafe_allow_html=True)
 
 _, c_center, _ = st.columns([1, 2, 1])
 with c_center:
     st.markdown("""
-    <div style="text-align: center; color: #f0f0f0; font-size: 1.1rem; background-color: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);">
-        상단의 <b>Company</b> 와 <b>Service</b> 메뉴를 통해 이동하실 수 있습니다.
+    <div style="text-align: center; color: #f0f0f0; font-size: 2.5rem; background-color: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);">
+        Korea Financial Investment Technology(KFIT)
     </div>
     """, unsafe_allow_html=True)
 
