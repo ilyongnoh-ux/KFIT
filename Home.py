@@ -77,9 +77,10 @@ st.markdown(
 
 # 페이지 하단으로 footer를 내리기 위한 여유 공간(스페이서)
 st.markdown(
-    "<div style='height: 25vh;'></div>",
+    "<div style='height: 40vh;'></div>",
     unsafe_allow_html=True,
 )
 
 # 항상 맨 마지막에 호출
 show_footer()
+
