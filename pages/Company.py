@@ -174,7 +174,7 @@ with c2:
 한 번의 계약으로 끝나는 관계가 아니라,  
 **오래 맡길 수 있는 ‘나만의 금융 담당자’**가 되는 것을 목표로 합니다.  
         """,
-        unsafe_allow_html=False,
+        unsafe_allow_html=True,
     )
 
 st.markdown("</div>", unsafe_allow_html=True)  # ceo-card 닫기
@@ -198,5 +198,6 @@ st.markdown(
 )
 
 show_footer()
+
 
 
