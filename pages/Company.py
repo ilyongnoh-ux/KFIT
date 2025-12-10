@@ -1,4 +1,3 @@
-
 import streamlit as st
 from utils import show_footer, hide_header
 
@@ -125,7 +124,7 @@ c1, c2 = st.columns([1, 1])
 with c1:
     # 내부 3컬럼으로 가운데 정렬
     left, center, right = st.columns([1, 1, 2])
-    with center:
+    with right:
         st.image(
             "pages/ceo.jpg",  # 대표 사진 파일 경로
             caption=None,
