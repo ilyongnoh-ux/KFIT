@@ -12,7 +12,7 @@ st.markdown("""
     [data-testid="stSidebar"] { display: none; }
     [data-testid="stSidebarCollapsedControl"] { display: none; }
     [data-testid="stPageLink-NavLink"] { border: none !important; background: transparent !important; padding: 0px !important; }
-    [data-testid="stPageLink-NavLink"] p { font-size: 1rem; font-weight: 600; color: #444; }
+    [data-testid="stPageLink-NavLink"] p { font-size: 1.3rem; font-weight: 600; color: #444; }
     [data-testid="stPageLink-NavLink"]:hover p { color: #1E3A8A; font-weight: 900; transform: scale(1.05); transition: all 0.2s; }
     .block-container { padding-top: 1rem !important; }
     </style>
@@ -70,5 +70,6 @@ with right_col:
         Wannabe_Life_Plan.app(left_col)
 
 show_footer()
+
 
 
