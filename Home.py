@@ -103,7 +103,7 @@ st.markdown(
             font-weight: 600;
             margin-top: 0;
         ">
-            당신의 평생 금융 파트너, 한국금융투자기술
+            당신의 평생 금융파트너, 한국금융투자기술
         </h3>
     </div>
     """,
@@ -118,4 +118,5 @@ st.markdown(
 
 # 항상 맨 마지막에 호출
 show_footer()
+
 
