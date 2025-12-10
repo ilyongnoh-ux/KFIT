@@ -79,7 +79,7 @@ st.markdown(
             color: #f5f5f5;
             font-size: 2.6rem;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-            font-weight: 600;
+            font-weight: 500;
             margin-top: 0;
             margin-bottom: 16px;
         ">
@@ -118,6 +118,7 @@ st.markdown(
 
 # 항상 맨 마지막에 호출
 show_footer()
+
 
 
 
