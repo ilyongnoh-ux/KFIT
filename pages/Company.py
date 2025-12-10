@@ -125,7 +125,7 @@ c1, c2 = st.columns([1, 2])
 with c1:
     # 내부 3컬럼으로 가운데 정렬
     left, center, right = st.columns([1, 2, 1])
-    with center:
+    with right:
         st.image(
             "pages/ceo.jpg",  # 대표 사진 파일 경로
             caption=None,
@@ -200,3 +200,4 @@ st.markdown(
 
 show_footer()
  
+
