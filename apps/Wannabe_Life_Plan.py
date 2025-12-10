@@ -89,8 +89,13 @@ def app(input_col):
     # 2. [왼쪽 프레임] 입력 UI
     # ==============================================================================
     with input_col:
-        st.markdown("""<div class="sidebar-container"><div class="sidebar-title">⛳ Wannabe Life</div><div class="sidebar-subtitle">Professional Asset Simulator</div></div>""", unsafe_allow_html=True)
-        
+        #st.markdown("""<div class="sidebar-container"><div class="sidebar-title">⛳ Wannabe Life</div><div class="sidebar-subtitle">Professional Asset Simulator</div></div>""", unsafe_allow_html=True)
+            st.markdown("""
+            <div class="sidebar-container">
+                <div class="responsive-sidebar-title">🧮 Client Info</div>
+            </div>
+        """, unsafe_allow_html=True)
+        st.markdown("---")    
         with st.expander("1. 기본 정보 (Profile)", expanded=True):
             c1, c2 = st.columns(2)
             age_curr = c1.number_input("현재 나이", 30, 80, 50)
@@ -284,5 +289,6 @@ def app(input_col):
         shortfall_txt=f"{ob_norm}세" if ob_norm else "Safe"
 
     )
+
 
 
