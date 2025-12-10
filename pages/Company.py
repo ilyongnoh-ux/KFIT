@@ -110,7 +110,7 @@ with col_nav1:
 with col_nav2:
     st.page_link("pages/Service.py", label="Service", use_container_width=True)
 
-st.divider()
+#st.divider()
 
 # 페이지 타이틀
 st.markdown(
@@ -200,6 +200,7 @@ st.markdown(
 
 show_footer()
  
+
 
 
 
