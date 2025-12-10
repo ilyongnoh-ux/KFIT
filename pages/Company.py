@@ -120,7 +120,7 @@ st.markdown(
 )
 st.markdown("---")
 
-c1, c2 = st.columns([1, 2])
+c1, c2 = st.columns([1, 1])
 
 with c1:
     # 내부 3컬럼으로 가운데 정렬
@@ -200,6 +200,7 @@ st.markdown(
 
 show_footer()
  
+
 
 
 
