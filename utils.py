@@ -42,7 +42,29 @@ def hide_sidebar():
 
 def show_footer():
     '''공통 풋터'''
-    st.markdown("""<div style='margin-top: 80px; padding: 30px; border-top: 1px solid #eee; text-align: center; color: #888; font-size: 0.9rem; background-color: #f9f9f9;'><b>Korea Financial Investment Technology(KFIT)®</b> | 문의: 010-6255-9978 <br> Copyright © 2025 WannabeDream® Solution. All rights reserved.</div>""", unsafe_allow_html=True)
+    #st.markdown("""<div style='margin-top: 80px; padding: 30px; border-top: 1px solid #eee; text-align: center; color: #888; font-size: 0.9rem; background-color: #f9f9f9;'><b>Korea Financial Investment Technology(KFIT)®</b> | 문의: 010-6255-9978 <br> Copyright © 2025 WannabeDream® Solution. All rights reserved.</div>""", unsafe_allow_html=True)
+    st.markdown(
+        """
+        <style>
+        .kfit-footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 8px 0;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.85);
+            background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0));
+            z-index: 999;
+        }
+        </style>
+        <div class="kfit-footer">
+            Korea Financial Investment Technology(KFIT)®</b> | 문의: 010-6255-9978 <br> Copyright © 2025 WannabeDream® Solution. All rights reserved.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 # ==========================================
 # [NEW] 공통 상담 신청 폼 컴포넌트
@@ -93,4 +115,5 @@ def render_common_form(app_type, DataModelClass, **simulation_data):
                     else:
                         st.error(f"❌ 전송 실패: {msg}")
                 except Exception as e:
+
                     st.error(f"데이터 처리 중 오류 발생: {str(e)}")
