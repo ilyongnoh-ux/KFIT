@@ -79,7 +79,7 @@ st.markdown(
             color: #f5f5f5;
             font-size: 2.6rem;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-            font-weight: 500;
+            font-weight: 600;
             margin-top: 0;
             margin-bottom: 16px;
         ">
@@ -90,7 +90,7 @@ st.markdown(
             color: #eeeeee;
             font-size: 1.9rem;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-            font-weight: 400;
+            font-weight: 500;
             margin-top: 0;
             margin-bottom: 4px;
         ">
@@ -98,12 +98,12 @@ st.markdown(
         </h3>
         <h3 style="
             color: #ffffff;
-            font-size: 2.1rem;
+            font-size: 1.9rem;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
             font-weight: 700;
             margin-top: 0;
         ">
-            당신의평생 금융파트너, 한국금융투자기술
+            당신의 평생 금융파트너, 한국금융투자기술
         </h3>
     </div>
     """,
@@ -118,6 +118,7 @@ st.markdown(
 
 # 항상 맨 마지막에 호출
 show_footer()
+
 
 
 
