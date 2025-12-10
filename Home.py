@@ -100,7 +100,7 @@ st.markdown(
             color: #ffffff;
             font-size: 2.1rem;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
-            font-weight: 500;
+            font-weight: 700;
             margin-top: 0;
         ">
             당신의평생 금융파트너, 한국금융투자기술
@@ -118,6 +118,7 @@ st.markdown(
 
 # 항상 맨 마지막에 호출
 show_footer()
+
 
 
 
