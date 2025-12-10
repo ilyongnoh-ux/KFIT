@@ -189,7 +189,7 @@ st.markdown(
             Bridge the Gap between possibility and reality
         </div>
         <div class="mission-sub">
-            가능성과 현실의 간극을 메우는, 당신의 평생 금융 파트너
+            가능성과 현실의 간극을 메우는, 당신의 평생 금융파트너
         </div>
     </div>
     """,
@@ -198,6 +198,7 @@ st.markdown(
 
 show_footer()
  
+
 
 
 
