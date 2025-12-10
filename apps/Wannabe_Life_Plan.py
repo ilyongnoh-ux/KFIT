@@ -151,7 +151,7 @@ def app(input_col):
     ages, liq_norm, re_norm, ob_norm = engine.run_simulation(liquid_asset, monthly_save, monthly_spend, inf_val, return_rate, st.session_state.properties, annual_hobby_cost)
     score, grade = engine.calculate_score(ob_norm)
 
-    st.markdown('<div class="responsive-title">📊 은퇴 준비 종합 진단</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-title">📊 은퇴 준비 종합 진단</div>', unsafe_allow_html=True)
 
     c1, c2, c3 = st.columns(3)
     with c1: st.markdown(f"""<div class="metric-container"><div class="metric-label">🎯 은퇴 준비 점수</div><div class="metric-value val-blue">{score}점</div></div>""", unsafe_allow_html=True)
@@ -288,6 +288,7 @@ def app(input_col):
         shortfall_txt=f"{ob_norm}세" if ob_norm else "Safe"
 
     )
+
 
 
 
