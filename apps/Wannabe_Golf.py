@@ -73,11 +73,29 @@ def app(input_col):
     # [UI] 입력창 배치 (왼쪽 프레임 input_col 로 이동)
     # --------------------------------------------------------------------------
     with input_col:
-        st.subheader("🏌️‍♂️Life Style")
+        st.markdown(
+            """
+            <h3 style="text-align:center; margin-bottom: 0.8rem;">
+                🏌️‍♂️ Life Style
+            </h3>
+            """,
+            unsafe_allow_html=True,
+        )
+    
         current_age = st.number_input("현재 나이", value=54, min_value=30, max_value=80)
         retire_age = st.slider("은퇴 예정 나이", 50, 75, 60)
         rounds = st.slider("월 라운딩 횟수 (회)", 0, 10, 4)
-        cost = st.select_slider("회당 비용 (그늘집 포함)", options=[20, 30, 35, 40, 50, 70], value=35) * 10000
+        cost = st.select_slider(
+            "회당 비용 (그늘집 포함)",
+            options=[20, 30, 35, 40, 50, 70],
+            value=35,
+        ) * 10000
+    #with input_col:
+    #    st.subheader("🏌️‍♂️Life Style")
+    #    current_age = st.number_input("현재 나이", value=54, min_value=30, max_value=80)
+    #    retire_age = st.slider("은퇴 예정 나이", 50, 75, 60)
+    #    rounds = st.slider("월 라운딩 횟수 (회)", 0, 10, 4)
+    #    cost = st.select_slider("회당 비용 (그늘집 포함)", options=[20, 30, 35, 40, 50, 70], value=35) * 10000
         
         st.divider()
         
@@ -145,4 +163,5 @@ def app(input_col):
         result_msg=result_msg
 
     )
+
 
