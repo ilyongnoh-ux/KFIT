@@ -62,12 +62,12 @@ with left_col:
 
 with right_col:
     # 선택된 앱 실행 (왼쪽 컬럼 넘겨주기)
-    if selected_app == "Wannabe Tax":
+    if selected_app == "Wannabe Golf":
+        Wannabe_Golf.app(left_col)
+    elif selected_app == "Wannabe Tax":
         Wannabe_Tax.app(left_col)
     elif selected_app == "Wannabe Life Plan":
         Wannabe_Life_Plan.app(left_col)
-    elif selected_app == "Wannabe Golf":
-        Wannabe_Golf.app(left_col)
-
 
 show_footer()
+
