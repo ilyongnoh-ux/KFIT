@@ -61,27 +61,48 @@ with col_nav2:
     st.page_link("pages/Service.py", label="Service", use_container_width=True)
 
 # 메인 타이틀 영역
-# 메인 타이틀
 st.markdown(
     """
     <div style="text-align: center; margin-top: 150px; margin-bottom: 30px;">
+        <!-- 메인 슬로건 -->
         <h1 style="
             color: white;
             font-size: 5rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
             font-weight: 800;
+            margin-bottom: 10px;
         ">
             Bridge the Gap
         </h1>
+        <!-- 영문 서브 슬로건 -->
+        <h2 style="
+            color: #f5f5f5;
+            font-size: 2.6rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            font-weight: 500;
+            margin-top: 0;
+            margin-bottom: 16px;
+        ">
+            between possibility and reality
+        </h2>
+        <!-- 한글 메시지 -->
         <h3 style="
-            color: #eee;
-            font-size: 2.4rem;
+            color: #eeeeee;
+            font-size: 1.9rem;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
             font-weight: 400;
-            line-height: 1.4;
+            margin-top: 0;
+            margin-bottom: 4px;
         ">
-            between possibility and reality<br>
-            가능성과 현실의 간극을 메우는,<br>
+            가능성과 현실의 간극을 메우는,
+        </h3>
+        <h3 style="
+            color: #ffffff;
+            font-size: 2.1rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+            font-weight: 600;
+            margin-top: 0;
+        ">
             당신의 평생 금융 파트너, 한국금융투자기술
         </h3>
     </div>
@@ -97,6 +118,3 @@ st.markdown(
 
 # 항상 맨 마지막에 호출
 show_footer()
-
-
-
