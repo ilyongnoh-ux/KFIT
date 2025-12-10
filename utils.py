@@ -40,7 +40,7 @@ def hide_sidebar():
     '''사이드바 숨기기'''
     st.markdown("""<style>[data-testid="stSidebar"] {display: none;} [data-testid="stSidebarCollapsedControl"] {display: none;}</style>""", unsafe_allow_html=True)
 
-ef show_footer():
+def show_footer():
     '''공통 풋터'''
     #st.markdown("""<div style='margin-top: 80px; padding: 30px; border-top: 1px solid #eee; text-align: center; color: #888; font-size: 0.9rem; background-color: #f9f9f9;'><b>Korea Financial Investment Technology(KFIT)®</b> | 문의: 010-6255-9978 <br> Copyright © 2025 WannabeDream® Solution. All rights reserved.</div>""", unsafe_allow_html=True)
     st.markdown(
@@ -117,4 +117,5 @@ def render_common_form(app_type, DataModelClass, **simulation_data):
                 except Exception as e:
 
                     st.error(f"데이터 처리 중 오류 발생: {str(e)}")
+
 
