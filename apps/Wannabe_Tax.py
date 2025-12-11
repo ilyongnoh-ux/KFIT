@@ -21,7 +21,7 @@ def app(input_col):
     .title-container { width: 100%; text-align: center; margin-bottom: 20px; padding: 10px 0; }
     .responsive-title {
         font-weight: 900; color: #4CAF50; white-space: nowrap;
-        font-size: clamp(1.8rem, 6vw, 4rem); line-height: 1.2;
+        font-size: clamp(1.8rem, 6vw, 3rem); line-height: 1.2;
     }
     .sidebar-container { width: 100%; margin-bottom: 10px; text-align: center; }
     .responsive-sidebar-title {
@@ -376,6 +376,7 @@ def app(input_col):
         is_liquidity_crisis="위험(흑자부도)" if liquidity_crisis else "안전", # 유동성 위기 여부
         shortage_amount=shortage                            # 부족한 현금 액수 (원)
     )
+
 
 
 
