@@ -327,7 +327,7 @@ def app(input_col):
             y=crisis_tax_val,
             text=f"🚨 <b>{crisis_year}년후 부족!</b>",
             showarrow=True, arrowhead=2, arrowsize=2.0, arrowwidth=2, arrowcolor="#FFFF00",
-            ax=0, ay=-40, bgcolor="#EF4444", bordercolor="#FFFF00",
+            ax=0, ay=-40, bgcolor="#0054FF", bordercolor="#FFFF00",
             font=dict(size=15, color="white", family="sans-serif")
         )
 
@@ -376,6 +376,7 @@ def app(input_col):
         is_liquidity_crisis="위험(흑자부도)" if liquidity_crisis else "안전", # 유동성 위기 여부
         shortage_amount=shortage                            # 부족한 현금 액수 (원)
     )
+
 
 
 
