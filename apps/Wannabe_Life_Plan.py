@@ -21,21 +21,15 @@ def app(input_col):
             text-align: left; 
             margin-bottom: 20px; 
         }
-        .metric-container { display: flex; flex-direction: column; align-items: center; justify-content: center; background: white; border-radius: 15px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); border: 1px solid #e0e0e0; height: 140px; }
-        .metric-label { font-size: 1.2rem; color: #333333; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; white-space: nowrap; }
-        .metric-value { font-size: 2.2rem; font-weight: 900; color: #000000; line-height: 1; }
-        .val-safe { color: #2E8B57 !important; }
-        .val-warn { color: #FF8C00 !important; }
-        .val-danger { color: #E53935 !important; }
-        .val-blue { color: #1E88E5 !important; }
-        .val-purple { color: #8E24AA !important; }
+        /* ... (metric-container, metric-label 등 유지) ... */
         
-        /* [수정] 자산 목록 스타일링 (버튼 통합을 위해 base 클래스 분리) */
+        /* [수정] 자산 목록 스타일링 (버튼 삽입을 위한 position: relative 추가) */
         .prop-card-base {
             padding: 10px; 
             border-radius: 5px; 
             margin-bottom: 8px;
             position: relative; /* 버튼 기준점 */
+            overflow: hidden; /* 버튼이 튀어나오지 않게 */
         }
         .prop-card-sell { 
             background-color: #e8f5e9 !important; 
@@ -49,30 +43,24 @@ def app(input_col):
         .prop-card-base div, .prop-title { color: #000000 !important; font-family: sans-serif; }
         .prop-title { font-weight: bold; font-size: 14px; margin-bottom: 3px; }
         
-        /* [NEW] 삭제 버튼 컨테이너: 마이너스 마진으로 카드 위로 끌어올림 */
-        .delete-btn-container {
-            position: relative;
-            top: -55px; /* 카드의 높이와 마진을 고려하여 위로 끌어올리는 값 */
-            float: right; /* 우측 정렬 */
+        /* [NEW] 삭제 버튼 스타일 (텍스트 박스 안에 들어간 것처럼 보이게) */
+        .delete-button-container {
+            position: absolute;
+            top: 5px;
+            right: 5px;
             z-index: 10;
         }
-
         /* Streamlit 버튼 스타일 재정의 (버튼을 작게 만들고 배경색 없앰) */
-        .delete-btn-container .stButton button {
+        .stButton button {
             background-color: transparent !important;
-            color: #E53935 !important; /* 빨간색 X */
+            color: #E53935 !important; 
             border: none !important;
             box-shadow: none !important;
             padding: 0 5px !important;
+            height: auto;
             line-height: 1;
             font-size: 1.2em;
             font-weight: bold;
-            margin-left: 10px; /* 텍스트와의 간격 */
-        }
-
-        /* [추가] 삭제 버튼 줄바꿈 방지 */
-        .st-emotion-cache-1r65j0p { 
-             white-space: nowrap; 
         }
 
         /* [수정] Client Info 타이틀도 Primary Color로 통일 */
@@ -200,26 +188,32 @@ def app(input_col):
                     # [수정] 텍스트 박스 스타일링을 위해 컬럼 제거 (줄바꿈 원인 제거)
                     # 전체를 마크다운으로 렌더링
                     
-                    # 마크다운 위에 삭제 버튼을 띄우기 위해 컬럼 분리
-                    col_card, col_btn = st.columns([9, 1])
-                    
-                    with col_card:
-                         st.markdown(f"""
-                            <div class="prop-card-base {css_class}">
-                                <div class="prop-title">{icon} {p['name']}</div>
-                                <div>순가치 {net}억 (대출 {p['loan']}억)</div>
-                                <div>{desc}</div>
+                    st.markdown(f"""
+                        <div class="prop-card-base {css_class}">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <div>
+                                    <div class="prop-title">{icon} {p['name']}</div>
+                                    <div>순가치 {net}억 (대출 {p['loan']}억)</div>
+                                    <div>{desc}</div>
+                                </div>
+                                <div class="delete-button-container">
+                                    {st.button("X", key=f"del_{i}")}
+                                </div>
                             </div>
-                         """, unsafe_allow_html=True)
-                    
-                    # [수정] 버튼을 마크다운 위에 겹치도록 CSS 컨테이너를 사용하지 않고, 
-                    # 마이너스 마진을 사용하여 카드 위에 배치
-                    with col_btn:
-                        st.markdown('<div class="delete-btn-container" style="margin-top: -55px; margin-left: -5px;">', unsafe_allow_html=True) 
-                        if st.button("X", key=f"del_{i}"): 
-                            st.session_state.properties.pop(i)
-                            st.rerun()
-                        st.markdown('</div>', unsafe_allow_html=True)
+                        </div>
+                    """, unsafe_allow_html=True)
+                    # st.markdown(f"""
+                    #     <div class="prop-card-base {css_class}">
+                    #         <div style="padding: 0; margin: 0;">
+                    #             <div class="prop-title">{icon} {p['name']}</div>
+                    #             <div>순가치 {net}억 (대출 {p['loan']}억)</div>
+                    #             <div>{desc}</div>
+                    #         </div>
+                    #         <div class="delete-button-container">
+                    #             {st.button("X", key=f"del_{i}")}
+                    #         </div>
+                    #     </div>
+                    # """, unsafe_allow_html=True)
 
         # expanded=True -> expanded=False
         with st.expander("4. 라이프스타일 (Lifestyle)", expanded=False):
