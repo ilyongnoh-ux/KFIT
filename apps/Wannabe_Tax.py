@@ -338,7 +338,7 @@ def app(input_col):
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         margin=dict(t=120, b=50, l=20, r=20),
         xaxis=dict(title="경과 기간(년)", fixedrange=True, tickmode='linear', tick0=0, dtick=5, showgrid=True, gridcolor='#374151'),
-        yaxis=dict(title="금액 단위(십억원)", fixedrange=True, tickformat=".1f", showgrid=True, gridcolor='#374151'),
+        yaxis=dict(title="금액 단위(억원)", fixedrange=True, tickformat=".1f", showgrid=True, gridcolor='#374151'),
         dragmode=False,
     )
 
@@ -376,6 +376,7 @@ def app(input_col):
         is_liquidity_crisis="위험(흑자부도)" if liquidity_crisis else "안전", # 유동성 위기 여부
         shortage_amount=shortage                            # 부족한 현금 액수 (원)
     )
+
 
 
 
