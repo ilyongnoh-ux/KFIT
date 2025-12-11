@@ -38,6 +38,14 @@ def app(input_col):
         font-size: clamp(1.5rem, 5vw, 2.5rem); 
         line-height: 1.2;
     }
+
+    /* [추가] 좌측 입력 섹션 제목(1, 2, 3)의 폰트 크기 조정 */
+    .stMarkdown h3 {
+        font-size: 1.2rem !important; /* Client Info (1.5rem~2.5rem) 보다 작게 */
+        font-weight: 700 !important;
+        margin-top: 20px !important; 
+        margin-bottom: 10px !important;
+    }
     
     /* [수정] 입력 항목 캡션 및 라벨 폰트 크기 통일 (Golf, Life Plan과 통일) */
     .stSlider label p, .stNumberInput label p, .stSelectbox label p, .stToggle label p, .stTextInput label p, .stTextArea label p {
@@ -100,7 +108,7 @@ def app(input_col):
         st.markdown("---")
         
         # 1. 자산 입력
-        st.markdown("### 1️⃣ 현재 자산 (부모님)")
+        st.markdown("### 1️⃣ 현재 자산 (부모님)") # H3 태그에 위 CSS가 적용됨
         real_estate_billions = st.number_input("🏠 부동산 (단위: 억)", value=30, step=1)
         financial_billions = st.number_input("💰 금융/동산 (단위: 억)", value=10, step=1)
         # total_estate 계산은 입력이 완료된 후 메인 로직에서 수행
@@ -108,7 +116,7 @@ def app(input_col):
         st.markdown("---")
         
         # 2. 가정 설정
-        st.markdown("### 2️⃣ 시뮬레이션 가정")
+        st.markdown("### 2️⃣ 시뮬레이션 가정") # H3 태그에 위 CSS가 적용됨
         has_spouse = st.toggle("배우자 생존 여부", value=True)
         
         if has_spouse:
@@ -124,13 +132,12 @@ def app(input_col):
         st.markdown("---")
         
         # 3. 미래 변수
-        st.markdown("### 3️⃣ 미래 변수 (복리)")
+        st.markdown("### 3️⃣ 미래 변수 (복리)") # H3 태그에 위 CSS가 적용됨
         inflation_real_estate = st.slider("부동산 연 상승률 (%)", 0, 10, 5, step=1) / 100
         inflation_financial = st.slider("금융자산 연 수익률 (%)", 0, 10, 2, step=1) / 100
 
     # ==========================================
     # 메인 로직 및 계산
-    # [수정] 모든 핵심 계산을 이 섹션 내에서 안전하게 정의
     # ==========================================
     total_estate = (real_estate_billions + financial_billions) * 100000000
 
@@ -146,7 +153,7 @@ def app(input_col):
         spouse_deduction = min(max(actual_spouse_take, 500000000), 3000000000)
 
     tax_base_1_now = total_estate - basic_deduction - spouse_deduction
-    tax_1_now = calculate_tax(tax_base_1_now) # <-- tax_1_now가 항상 정의됨
+    tax_1_now = calculate_tax(tax_base_1_now) 
 
     # 2차 상속세 시뮬레이션
     years = list(range(sim_years + 1))
