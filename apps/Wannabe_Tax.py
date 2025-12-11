@@ -20,7 +20,7 @@ def app(input_col):
     }
     .title-container { width: 100%; text-align: center; margin-bottom: 20px; padding: 10px 0; }
     
-    /* [수정 완료] 메인 타이틀: 다크 모드에서 흰색으로 명시 */
+    /* 메인 타이틀: 다크 모드에서 흰색으로 명시 */
     .responsive-title { 
         font-size: clamp(1.8rem, 6vw, 4rem); 
         font-weight: 900; 
@@ -30,7 +30,7 @@ def app(input_col):
         margin-bottom: 20px; 
     }            
     
-    /* [수정 완료] 좌측 제목: 다크 모드에서 흰색으로 명시 */
+    /* 좌측 제목: 다크 모드에서 흰색으로 명시 */
     .sidebar-container { width: 100%; margin-bottom: 10px; text-align: center; }
     .responsive-sidebar-title {
         font-weight: 900; 
@@ -39,15 +39,16 @@ def app(input_col):
         line-height: 1.2;
     }
 
-    /* [추가] 좌측 입력 섹션 제목(1, 2, 3)의 폰트 크기 조정 */
+    /* [수정 완료] 좌측 입력 섹션 제목(1, 2, 3) 및 우측 진단결과 제목의 폰트 크기/색상 조정 */
     .stMarkdown h3 {
         font-size: 1.2rem !important; /* Client Info (1.5rem~2.5rem) 보다 작게 */
         font-weight: 700 !important;
+        color: var(--primary-color) !important; /* 초록색(브랜드 색상)으로 변경하여 다크모드/라이트모드 모두 시인성 확보 */
         margin-top: 20px !important; 
         margin-bottom: 10px !important;
     }
     
-    /* [수정] 입력 항목 캡션 및 라벨 폰트 크기 통일 (Golf, Life Plan과 통일) */
+    /* 입력 항목 캡션 및 라벨 폰트 크기 통일 */
     .stSlider label p, .stNumberInput label p, .stSelectbox label p, .stToggle label p, .stTextInput label p, .stTextArea label p {
         font-size: clamp(0.9rem, 1.2vw, 1.1rem) !important;
         font-weight: 500;
@@ -102,9 +103,10 @@ def app(input_col):
     with input_col:
         st.markdown("""
             <div class="sidebar-container">
-                <h2 class="responsive-sidebar-title">🧮 Client Info</h2>
+                <h3 class="responsive-sidebar-title">🧮 Client Info</h3>
             </div>
         """, unsafe_allow_html=True)
+        st.markdown("---")
         
         # 1. 자산 입력
         st.markdown("### 1️⃣ 현재 자산 (부모님)")
@@ -263,7 +265,6 @@ def app(input_col):
     
     # ==========================================
     # 7. 차트 시각화
-    # [차트 코드 시작]
     # ==========================================
     
     # --- [유동성 경고 메시지] ---
@@ -372,8 +373,7 @@ def app(input_col):
     )
 
     st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
-    # [차트 코드 끝]
-
+    
     st.info("""
     💡 **그래프 해석 가이드**:
     1. **회색 산**: 전체 자산 규모
@@ -405,5 +405,3 @@ def app(input_col):
         is_liquidity_crisis="위험(흑자부도)" if liquidity_crisis else "안전", 
         shortage_amount=shortage                            
     )
-
-
