@@ -43,7 +43,8 @@ def app(input_col):
     .stMarkdown h3 {
         font-size: 1.2rem !important; /* Client Info (1.5rem~2.5rem) 보다 작게 */
         font-weight: 700 !important;
-        color: var(--primary-color) !important; /* 초록색(브랜드 색상)으로 변경하여 다크모드/라이트모드 모두 시인성 확보 */
+        color: #FAFAFA !important; /* 흰색 유지 */
+        text-shadow: 0 0 5px rgba(0,0,0,0.8), 0 0 1px rgba(0,0,0,0.9); /* [추가] 텍스트 그림자를 넣어 대비 강화 */
         margin-top: 20px !important; 
         margin-bottom: 10px !important;
     }
@@ -83,7 +84,7 @@ def app(input_col):
     """, unsafe_allow_html=True)
 
     # ==========================================
-    # 함수 정의
+    # 함수 정의 (중략)
     # ==========================================
     def calculate_tax(tax_base):
         if tax_base <= 0: return 0
@@ -98,7 +99,7 @@ def app(input_col):
         return f"{eok:,.1f}억"
 
     # ==========================================
-    # [왼쪽 프레임] 입력창 구성 
+    # [왼쪽 프레임] 입력창 구성 (중략)
     # ==========================================
     with input_col:
         st.markdown("""
@@ -138,7 +139,7 @@ def app(input_col):
         inflation_financial = st.slider("금융자산 연 수익률 (%)", 0, 10, 2, step=1) / 100
 
     # ==========================================
-    # 메인 로직 및 계산
+    # 메인 로직 및 계산 (중략)
     # ==========================================
     total_estate = (real_estate_billions + financial_billions) * 100000000
 
@@ -156,7 +157,7 @@ def app(input_col):
     tax_base_1_now = total_estate - basic_deduction - spouse_deduction
     tax_1_now = calculate_tax(tax_base_1_now) 
 
-    # 2차 상속세 시뮬레이션
+    # 2차 상속세 시뮬레이션 (중략)
     years = list(range(sim_years + 1))
     assets_re = []
     assets_fin = []
