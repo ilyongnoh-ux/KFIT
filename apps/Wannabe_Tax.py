@@ -108,7 +108,7 @@ def app(input_col):
         st.markdown("---")
         
         # 1. 자산 입력
-        st.markdown("### 1️⃣ 현재 자산 (부모님)") # H3 태그에 위 CSS가 적용됨
+        st.markdown("### 1️⃣ 현재 자산 (부모님)")
         real_estate_billions = st.number_input("🏠 부동산 (단위: 억)", value=30, step=1)
         financial_billions = st.number_input("💰 금융/동산 (단위: 억)", value=10, step=1)
         # total_estate 계산은 입력이 완료된 후 메인 로직에서 수행
@@ -116,7 +116,7 @@ def app(input_col):
         st.markdown("---")
         
         # 2. 가정 설정
-        st.markdown("### 2️⃣ 시뮬레이션 가정") # H3 태그에 위 CSS가 적용됨
+        st.markdown("### 2️⃣ 시뮬레이션 가정")
         has_spouse = st.toggle("배우자 생존 여부", value=True)
         
         if has_spouse:
@@ -132,7 +132,7 @@ def app(input_col):
         st.markdown("---")
         
         # 3. 미래 변수
-        st.markdown("### 3️⃣ 미래 변수 (복리)") # H3 태그에 위 CSS가 적용됨
+        st.markdown("### 3️⃣ 미래 변수 (복리)")
         inflation_real_estate = st.slider("부동산 연 상승률 (%)", 0, 10, 5, step=1) / 100
         inflation_financial = st.slider("금융자산 연 수익률 (%)", 0, 10, 2, step=1) / 100
 
@@ -261,7 +261,126 @@ def app(input_col):
                 <div class="sub-text-wrapper sub-text-highlight">{ratio_desc}: 약 {tax_ratio:.1f}%</div>
             </div>
         """, unsafe_allow_html=True)
-    # ... (중략: 유동성 경고, 차트 시각화 유지) ...
+    
+    # ==========================================
+    # 7. 차트 시각화
+    # [차트 코드 시작]
+    # ==========================================
+    
+    # --- [유동성 경고 메시지] ---
+    if liquidity_crisis:
+        if has_spouse:
+            crisis_context = "2차 상속 시"
+            subject = "자녀들이"
+        else:
+            crisis_context = "미래 시점 상속 시"
+            subject = "자녀들이"
+
+        final_shortage = final_tax_simulated - final_financial_simulated
+
+        if final_shortage > 0:
+            st.markdown(f"""
+            <div class="warning-box">
+                <h3>🚨 WARNING: 유동성 위기 (흑자 부도)</h3>
+                <p>
+                    <strong>{sim_years}년 뒤 {crisis_context}</strong>, {subject} 내야 할 세금은 <strong>{format_krw_display(final_tax_simulated)}</strong>입니다.<br>
+                    하지만 그때 가용 가능한 현금은 <strong>{format_krw_display(final_financial_simulated)}</strong> 뿐입니다.<br>
+                    <br>
+                    <span style="font-size: clamp(1rem, 2vw, 1.5rem); font-weight: bold; color: #FFF; background-color: #ef4444; padding: 5px 10px; border-radius: 5px; white-space: nowrap;">
+                    부족한 현금: {format_krw_display(final_shortage)}
+                    </span>
+                    <br><br>
+                    👉 <strong>그래프의 빨간 막대가 파란색 영역을 뚫고 올라갔습니다.</strong><br>
+                    부동산을 급매하거나 재원을 미리 마련해야 합니다.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+             st.markdown(f"""
+             <div class="warning-box">
+                <h3>⚠️ CAUTION: 일시적 위험</h3>
+                <p>{crisis_year}년차 즈음에 일시적으로 세금이 보유 현금을 초과할 수 있습니다.</p>
+             </div>
+             """, unsafe_allow_html=True)
+
+    else:
+        st.markdown(f"""
+        <div class="safe-box">
+            <h3>✅ SAFE: 유동성 양호</h3>
+            <p>예상되는 상속세보다 보유 현금이 더 많습니다.<br>(그래프의 빨간 막대가 파란 영역 내에 안정적으로 존재합니다.)</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown(f"### 🎯 {simulation_title}")
+    st.caption(simulation_desc)
+
+    df_chart = pd.DataFrame({
+        "Year": years,
+        "RealEstate": [x / 1000000000 for x in assets_re],
+        "Financial": [x / 1000000000 for x in assets_fin],
+        "Tax": [x / 1000000000 for x in taxes]
+    })
+
+    fig = go.Figure()
+
+    # 1. 배경: 총 자산
+    fig.add_trace(go.Scatter(
+        x=df_chart["Year"], y=df_chart["RealEstate"] + df_chart["Financial"],
+        mode='lines', name='총 자산',
+        line=dict(width=1, color='rgba(160, 160, 160, 0.5)'),
+        fill='tozeroy', fillcolor='rgba(128, 128, 128, 0.3)',
+        hoverinfo='skip'
+    ))
+
+    # 2. 기준선: 금융자산 (보유 현금)
+    fig.add_trace(go.Scatter(
+        x=df_chart["Year"], y=df_chart["Financial"],
+        mode='lines', name='보유 현금',
+        line=dict(width=4, color='#00BFFF', dash='solid'),
+        hovertemplate='보유현금: %{y:.1f}억<extra></extra>'
+    ))
+
+    # 3. 막대: 상속세
+    fig.add_trace(go.Bar(
+        x=df_chart["Year"], y=df_chart["Tax"],
+        name='예상 상속세',
+        marker_color='#EF4444', opacity=0.9,
+        hovertemplate='예상상속세: %{y:.1f}억<extra></extra>'
+    ))
+
+    # 4. 핀포인트 텍스트
+    if liquidity_crisis and crisis_year is not None:
+        crisis_tax_val = df_chart.loc[crisis_year, "Tax"]
+        fig.add_annotation(
+            x=crisis_year,
+            y=crisis_tax_val,
+            text=f"🚨 <b>{crisis_year}년 후 고갈!</b>",
+            showarrow=True, arrowhead=2, arrowsize=2.0, arrowwidth=2, arrowcolor="#FFFF00",
+            ax=0, ay=-40, bgcolor="#EF4444", bordercolor="#FFFF00",
+            font=dict(size=15, color="white", family="sans-serif")
+        )
+
+    # 차트 레이아웃
+    fig.update_layout(
+        template="plotly_dark", height=550,
+        hovermode="x unified",
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        margin=dict(t=120, b=50, l=20, r=20),
+        xaxis=dict(title="경과 기간 (년)", fixedrange=True, tickmode='linear', tick0=0, dtick=5, showgrid=True, gridcolor='#374151'),
+        yaxis=dict(title="금액 (단위: 십억 원)", fixedrange=True, tickformat=".1f", showgrid=True, gridcolor='#374151'),
+        dragmode=False,
+    )
+
+    st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+    # [차트 코드 끝]
+
+    st.info("""
+    💡 **그래프 해석 가이드**:
+    1. **회색 산**: 전체 자산 규모
+    2. **파란 선**: 세금 낼 수 있는 현금 능력
+    3. **빨간 막대**: 자녀가 낼 세금 (빨간 막대가 파란 선을 넘으면 위험)
+    """)
 
 # --------------------------------------------------------------------------
     # 공통 상담 폼 호출
