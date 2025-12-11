@@ -18,21 +18,21 @@ st.markdown("""
         padding: 0px !important; 
     }
 
-    /* 기본 상태 */
+    /* 기본 상태: 텍스트 색상을 Streamlit 변수로 설정하여 다크/라이트 모드 자동 대응 */
     [data-testid="stPageLink-NavLink"] p { 
-        font-size: 1.2rem;            /* 고정 크기 */
+        font-size: 1.2rem;            
         font-weight: 600; 
-        color: #444; 
+        color: var(--text-color); /* Streamlit 기본 텍스트 색상 사용 (다크: 흰색, 라이트: 검정) */
         padding: 4px 6px;             
         margin: 0; 
         transition: all 0.15s ease-in-out; 
     }
 
-    /* [수정 완료] 호버 상태: 폰트 크기 변경(1.3rem) 제거하여 울렁거림 방지 */
+    /* [수정 완료] 호버 상태: Primary Color (브랜드 색상, 초록색 계열) 사용 */
     [data-testid="stPageLink-NavLink"]:hover p { 
-        color: #FFFFFF !important; /* 다크모드 대비 흰색 유지 */
-        font-weight: 900 !important; /* 굵기만 증가 */
-        font-size: 1.2rem;            /* 기본 크기(1.2rem) 유지 */
+        color: var(--primary-color) !important; /* 초록색 계열로 변경하여 대비 및 강조 */
+        font-weight: 900 !important; 
+        font-size: 1.2rem;            /* 크기 변화 제거 */
     }
 
     .block-container { padding-top: 1rem !important; }
