@@ -102,7 +102,7 @@ def app(input_col):
     with input_col:
         st.markdown("""
             <div class="sidebar-container">
-                <h3 class="responsive-sidebar-title">🧮 Client Info</h3>
+                <h2 class="responsive-sidebar-title">🧮 Client Info</h2>
             </div>
         """, unsafe_allow_html=True)
         
@@ -405,4 +405,5 @@ def app(input_col):
         is_liquidity_crisis="위험(흑자부도)" if liquidity_crisis else "안전", 
         shortage_amount=shortage                            
     )
+
 
