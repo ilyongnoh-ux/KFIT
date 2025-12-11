@@ -287,9 +287,9 @@ def app(input_col):
 
     df_chart = pd.DataFrame({
         "Year": years,
-        "RealEstate": [x / 1000000000 for x in assets_re],
-        "Financial": [x / 1000000000 for x in assets_fin],
-        "Tax": [x / 1000000000 for x in taxes]
+        "RealEstate": [x / 100000000 for x in assets_re],
+        "Financial": [x / 100000000 for x in assets_fin],
+        "Tax": [x / 100000000 for x in taxes]
     })
 
     fig = go.Figure()
@@ -376,6 +376,7 @@ def app(input_col):
         is_liquidity_crisis="위험(흑자부도)" if liquidity_crisis else "안전", # 유동성 위기 여부
         shortage_amount=shortage                            # 부족한 현금 액수 (원)
     )
+
 
 
 
