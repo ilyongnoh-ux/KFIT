@@ -32,7 +32,7 @@ st.markdown("""
     [data-testid="stPageLink-NavLink"]:hover p { 
         color: #1E3A8A; 
         font-weight: 900; 
-        font-size: 1.3rem;            /* 여기서 살짝만 키움 */
+        /*font-size: 1.3rem;             여기서 살짝만 키움 */
         /* transform: scale(1.05);  ← 이 줄은 제거 */
     }
 
@@ -93,6 +93,7 @@ with right_col:
         Wannabe_Life_Plan.app(left_col)
 
 show_footer()
+
 
 
 
