@@ -4,12 +4,12 @@ import numpy as np
 import plotly.graph_objects as go
 import requests
 import json
-from utils import send_data_to_api, render_common_form 
-from models import TaxData  
+from utils import send_data_to_api, render_common_form # [NEW]
+from models import TaxData  # 모델 사용
 
 def app(input_col):
     # ==========================================
-    # CSS 스타일링 (Life Plan과 통일된 구조로 변경)
+    # CSS 스타일링 (원본 100% 유지)
     # ==========================================
     st.markdown("""
     <style>
@@ -19,48 +19,16 @@ def app(input_col):
         font-size: 16px !important;
     }
     .title-container { width: 100%; text-align: center; margin-bottom: 20px; padding: 10px 0; }
-    
-    /* [수정 완료] 메인 타이틀: 다크 모드에서 흰색으로 명시 */
-    .responsive-title { 
-        font-size: clamp(1.8rem, 6vw, 4rem); 
-        font-weight: 900; 
-        color: #FAFAFA; /* 흰색으로 강제 통일 */
-        white-space: nowrap; 
-        text-align: center; 
-        margin-bottom: 20px; 
-    }            
-    
-    /* [수정 완료] 좌측 제목: 다크 모드에서 흰색으로 명시 */
+    .responsive-title {
+        font-weight: 900; color: #4CAF50; white-space: nowrap;
+        font-size: clamp(1.8rem, 6vw, 4rem); line-height: 1.2;
+    }
     .sidebar-container { width: 100%; margin-bottom: 10px; text-align: center; }
     .responsive-sidebar-title {
-        font-weight: 900; 
-        color: #FAFAFA; /* 흰색으로 강제 통일 */
-        font-size: clamp(1.5rem, 5vw, 2.5rem); 
+        font-weight: 800; color: #4CAF50; white-space: nowrap;
+        font-size: clamp(1.2rem, 13cqw, 2.5rem); 
         line-height: 1.2;
     }
-
-    /* [추가] 좌측 입력 섹션 제목(1, 2, 3)의 폰트 크기 조정 */
-    .stMarkdown h3 {
-        font-size: 1.2rem !important; /* Client Info (1.5rem~2.5rem) 보다 작게 */
-        font-weight: 700 !important;
-        margin-top: 20px !important; 
-        margin-bottom: 10px !important;
-    }
-    
-    /* [수정] 입력 항목 캡션 및 라벨 폰트 크기 통일 (Golf, Life Plan과 통일) */
-    .stSlider label p, .stNumberInput label p, .stSelectbox label p, .stToggle label p, .stTextInput label p, .stTextArea label p {
-        font-size: clamp(0.9rem, 1.2vw, 1.1rem) !important;
-        font-weight: 500;
-        white-space: nowrap !important;
-    }
-    .stCheckbox label p {
-        font-size: clamp(0.9rem, 1.2vw, 1.1rem) !important;
-        white-space: nowrap !important; 
-        width: 100%;
-        overflow: visible;
-    }
-
-    /* 나머지 박스 스타일링 (Tax 앱 고유의 Dark Mode 박스 스타일은 유지) */
     .big-number-box {
         background-color: #1F2937; padding: 2vw; border-radius: 12px;
         border: 1px solid #374151; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
@@ -78,6 +46,16 @@ def app(input_col):
     .val-negative { color: #F87171; } 
     .warning-box { background-color: #450a0a; color: #fca5a5; padding: 20px; border-radius: 12px; border-left: 8px solid #ef4444; margin-top: 20px; line-height: 1.5; font-size: clamp(0.9rem, 1.5vw, 1.2rem); }
     .safe-box { background-color: #064e3b; color: #6ee7b7; padding: 20px; border-radius: 12px; border-left: 8px solid #10b981; margin-top: 20px; line-height: 1.5; font-size: clamp(0.9rem, 1.5vw, 1.2rem); }
+    .stSlider label p, .stNumberInput label p, .stToggle label p, .stTextInput label p, .stTextArea label p {
+        font-size: clamp(0.8rem, 1.2vw, 1.1rem) !important;
+        white-space: nowrap !important;
+    }
+    .stCheckbox label p {
+        font-size: clamp(11px, 4.5cqw, 14px) !important;
+        white-space: nowrap !important; 
+        width: 100%;
+        overflow: visible;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -97,12 +75,12 @@ def app(input_col):
         return f"{eok:,.1f}억"
 
     # ==========================================
-    # [왼쪽 프레임] 입력창 구성 
+    # [왼쪽 프레임] 입력창 구성 (상담폼 제거됨)
     # ==========================================
     with input_col:
         st.markdown("""
             <div class="sidebar-container">
-                <h3 class="responsive-sidebar-title">🧮 Client Info</h3>
+                <div class="responsive-sidebar-title">🧮 Client Info</div>
             </div>
         """, unsafe_allow_html=True)
         st.markdown("---")
@@ -111,7 +89,7 @@ def app(input_col):
         st.markdown("### 1️⃣ 현재 자산 (부모님)")
         real_estate_billions = st.number_input("🏠 부동산 (단위: 억)", value=30, step=1)
         financial_billions = st.number_input("💰 금융/동산 (단위: 억)", value=10, step=1)
-        # total_estate 계산은 입력이 완료된 후 메인 로직에서 수행
+        total_estate = (real_estate_billions + financial_billions) * 100000000
         
         st.markdown("---")
         
@@ -136,12 +114,11 @@ def app(input_col):
         inflation_real_estate = st.slider("부동산 연 상승률 (%)", 0, 10, 5, step=1) / 100
         inflation_financial = st.slider("금융자산 연 수익률 (%)", 0, 10, 2, step=1) / 100
 
+        # [삭제됨] 상담 신청 폼은 여기서 제거되어 오른쪽 하단으로 이동했습니다.
+
     # ==========================================
     # 메인 로직 및 계산
     # ==========================================
-    total_estate = (real_estate_billions + financial_billions) * 100000000
-
-    # 1차 상속세 계산 (현재 기준)
     basic_deduction = 500000000 
     spouse_deduction = 0
 
@@ -153,9 +130,8 @@ def app(input_col):
         spouse_deduction = min(max(actual_spouse_take, 500000000), 3000000000)
 
     tax_base_1_now = total_estate - basic_deduction - spouse_deduction
-    tax_1_now = calculate_tax(tax_base_1_now) 
+    tax_1_now = calculate_tax(tax_base_1_now)
 
-    # 2차 상속세 시뮬레이션
     years = list(range(sim_years + 1))
     assets_re = []
     assets_fin = []
@@ -168,10 +144,7 @@ def app(input_col):
         simulation_desc = "※ 그래프 시작점: 1차 납부 후 배우자가 받은 몫"
         
         net_estate_1 = total_estate - tax_1_now
-        # 오류 방지 로직 강화: total_estate가 0일 경우 나누기 방지
-        asset_ratio = (real_estate_billions / (real_estate_billions+financial_billions)) if (real_estate_billions+financial_billions) > 0 else 0
-        
-        curr_re_val = (net_estate_1 * (spouse_share_pct/100)) * asset_ratio
+        curr_re_val = (net_estate_1 * (spouse_share_pct/100)) * (real_estate_billions / (real_estate_billions+financial_billions) if total_estate > 0 else 0)
         curr_fin_val = (net_estate_1 * (spouse_share_pct/100)) - curr_re_val
         deduction_future = 500000000
     else:
@@ -206,14 +179,13 @@ def app(input_col):
     shortage = final_tax_simulated - final_financial_simulated if liquidity_crisis else 0
 
     # ==========================================
-    # 6. [오른쪽 프레임] 메인 리포트 UI (이후 코드는 변경 없음)
+    # 6. [오른쪽 프레임] 메인 리포트 UI
     # ==========================================
     st.markdown("""
         <div class="title-container">
             <div class="responsive-title">⛳ Inheritance Tax Simulation</div>
         </div>
     """, unsafe_allow_html=True)
-    
     st.markdown("---")
 
     col1, col2, col3 = st.columns(3)
@@ -261,12 +233,7 @@ def app(input_col):
                 <div class="sub-text-wrapper sub-text-highlight">{ratio_desc}: 약 {tax_ratio:.1f}%</div>
             </div>
         """, unsafe_allow_html=True)
-    
-    # ==========================================
-    # 7. 차트 시각화
-    # [차트 코드 시작]
-    # ==========================================
-    
+
     # --- [유동성 경고 메시지] ---
     if liquidity_crisis:
         if has_spouse:
@@ -311,6 +278,9 @@ def app(input_col):
         </div>
         """, unsafe_allow_html=True)
 
+    # ==========================================
+    # 7. 차트 시각화
+    # ==========================================
     st.markdown("<br><br>", unsafe_allow_html=True)
     st.markdown(f"### 🎯 {simulation_title}")
     st.caption(simulation_desc)
@@ -373,7 +343,6 @@ def app(input_col):
     )
 
     st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
-    # [차트 코드 끝]
 
     st.info("""
     💡 **그래프 해석 가이드**:
@@ -383,7 +352,7 @@ def app(input_col):
     """)
 
 # --------------------------------------------------------------------------
-    # 공통 상담 폼 호출
+    # [수정됨] 공통 상담 폼 호출 + 진단 결과 데이터 추가 저장
     # --------------------------------------------------------------------------
     render_common_form(
         app_type="tax",
@@ -399,10 +368,11 @@ def app(input_col):
         inflation_re_pct=inflation_real_estate * 100,
         inflation_fin_pct=inflation_financial * 100,
 
-        # 2. 시뮬레이션 진단 결과 데이터 (Output)
-        calculated_tax_now=tax_1_now,                       
-        calculated_future_tax=final_tax_simulated,          
-        calculated_future_cash=final_financial_simulated,   
-        is_liquidity_crisis="위험(흑자부도)" if liquidity_crisis else "안전", 
-        shortage_amount=shortage                            
+        # 2. [NEW] 시뮬레이션 진단 결과 데이터 (Output)
+        # 이 값들이 구글 시트/DB에 함께 저장됩니다.
+        calculated_tax_now=tax_1_now,                       # 현재 기준 예상 상속세 (원)
+        calculated_future_tax=final_tax_simulated,          # 미래 예상 상속세 (원)
+        calculated_future_cash=final_financial_simulated,   # 미래 가용 현금 (원)
+        is_liquidity_crisis="위험(흑자부도)" if liquidity_crisis else "안전", # 유동성 위기 여부
+        shortage_amount=shortage                            # 부족한 현금 액수 (원)
     )
