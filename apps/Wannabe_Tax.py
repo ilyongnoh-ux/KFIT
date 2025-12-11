@@ -16,7 +16,7 @@ def app(input_col):
     .main { background-color: #0E1117 !important; color: #FAFAFA !important; }
     html, body, [class*="css"], .stMarkdown, .stButton, .stNumberInput, .stSlider, .stTextInput, .stTextArea {
         font-family: 'Helvetica Neue', sans-serif;
-        font-size: clamp(14px, 1.1vw, 18px) !important;
+        font-size: 16px !important;
     }
     .title-container { width: 100%; text-align: center; margin-bottom: 20px; padding: 10px 0; }
     .responsive-title {
@@ -352,12 +352,13 @@ def app(input_col):
     """)
 
 # --------------------------------------------------------------------------
-    # [수정됨] 공통 상담 폼 호출
+    # [수정됨] 공통 상담 폼 호출 + 진단 결과 데이터 추가 저장
     # --------------------------------------------------------------------------
     render_common_form(
         app_type="tax",
         DataModelClass=TaxData,
-        # TaxData에 필요한 나머지 변수 전달
+        
+        # 1. 사용자 입력 데이터 (Input)
         real_estate_billions=real_estate_billions,
         financial_billions=financial_billions,
         total_estate_eok=total_estate/100000000,
@@ -365,6 +366,13 @@ def app(input_col):
         spouse_pct=spouse_share_pct if has_spouse else 0,
         sim_years=sim_years,
         inflation_re_pct=inflation_real_estate * 100,
-        inflation_fin_pct=inflation_financial * 100
+        inflation_fin_pct=inflation_financial * 100,
 
+        # 2. [NEW] 시뮬레이션 진단 결과 데이터 (Output)
+        # 이 값들이 구글 시트/DB에 함께 저장됩니다.
+        calculated_tax_now=tax_1_now,                       # 현재 기준 예상 상속세 (원)
+        calculated_future_tax=final_tax_simulated,          # 미래 예상 상속세 (원)
+        calculated_future_cash=final_financial_simulated,   # 미래 가용 현금 (원)
+        is_liquidity_crisis="위험(흑자부도)" if liquidity_crisis else "안전", # 유동성 위기 여부
+        shortage_amount=shortage                            # 부족한 현금 액수 (원)
     )
