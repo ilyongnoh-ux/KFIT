@@ -20,7 +20,7 @@ def app(input_col):
     }
     .title-container { width: 100%; text-align: center; margin-bottom: 20px; padding: 10px 0; }
     
-    /* 메인 타이틀: 다크 모드에서 흰색으로 명시 */
+    /* [수정 완료] 메인 타이틀: 다크 모드에서 흰색으로 명시 */
     .responsive-title { 
         font-size: clamp(1.8rem, 6vw, 4rem); 
         font-weight: 900; 
@@ -30,7 +30,7 @@ def app(input_col):
         margin-bottom: 20px; 
     }            
     
-    /* 좌측 제목: 다크 모드에서 흰색으로 명시 */
+    /* [수정 완료] 좌측 제목: 다크 모드에서 흰색으로 명시 */
     .sidebar-container { width: 100%; margin-bottom: 10px; text-align: center; }
     .responsive-sidebar-title {
         font-weight: 900; 
@@ -39,17 +39,15 @@ def app(input_col):
         line-height: 1.2;
     }
 
-    /* [수정 완료] 좌측 입력 섹션 제목(1, 2, 3) 및 우측 진단결과 제목의 폰트 크기/색상 조정 */
+    /* [추가] 좌측 입력 섹션 제목(1, 2, 3)의 폰트 크기 조정 */
     .stMarkdown h3 {
         font-size: 1.2rem !important; /* Client Info (1.5rem~2.5rem) 보다 작게 */
         font-weight: 700 !important;
-        color: #FAFAFA !important; /* 흰색 유지 */
-        text-shadow: 0 0 5px rgba(0,0,0,0.8), 0 0 1px rgba(0,0,0,0.9); /* [추가] 텍스트 그림자를 넣어 대비 강화 */
         margin-top: 20px !important; 
         margin-bottom: 10px !important;
     }
     
-    /* 입력 항목 캡션 및 라벨 폰트 크기 통일 */
+    /* [수정] 입력 항목 캡션 및 라벨 폰트 크기 통일 (Golf, Life Plan과 통일) */
     .stSlider label p, .stNumberInput label p, .stSelectbox label p, .stToggle label p, .stTextInput label p, .stTextArea label p {
         font-size: clamp(0.9rem, 1.2vw, 1.1rem) !important;
         font-weight: 500;
@@ -84,7 +82,7 @@ def app(input_col):
     """, unsafe_allow_html=True)
 
     # ==========================================
-    # 함수 정의 (중략)
+    # 함수 정의
     # ==========================================
     def calculate_tax(tax_base):
         if tax_base <= 0: return 0
@@ -99,7 +97,7 @@ def app(input_col):
         return f"{eok:,.1f}억"
 
     # ==========================================
-    # [왼쪽 프레임] 입력창 구성 (중략)
+    # [왼쪽 프레임] 입력창 구성 
     # ==========================================
     with input_col:
         st.markdown("""
@@ -139,7 +137,7 @@ def app(input_col):
         inflation_financial = st.slider("금융자산 연 수익률 (%)", 0, 10, 2, step=1) / 100
 
     # ==========================================
-    # 메인 로직 및 계산 (중략)
+    # 메인 로직 및 계산
     # ==========================================
     total_estate = (real_estate_billions + financial_billions) * 100000000
 
@@ -157,7 +155,7 @@ def app(input_col):
     tax_base_1_now = total_estate - basic_deduction - spouse_deduction
     tax_1_now = calculate_tax(tax_base_1_now) 
 
-    # 2차 상속세 시뮬레이션 (중략)
+    # 2차 상속세 시뮬레이션
     years = list(range(sim_years + 1))
     assets_re = []
     assets_fin = []
@@ -266,6 +264,7 @@ def app(input_col):
     
     # ==========================================
     # 7. 차트 시각화
+    # [차트 코드 시작]
     # ==========================================
     
     # --- [유동성 경고 메시지] ---
@@ -374,7 +373,8 @@ def app(input_col):
     )
 
     st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
-    
+    # [차트 코드 끝]
+
     st.info("""
     💡 **그래프 해석 가이드**:
     1. **회색 산**: 전체 자산 규모
