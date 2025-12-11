@@ -86,7 +86,7 @@ def app(input_col):
         #st.markdown("---")
         
         # 1. 자산 입력
-        st.markdown("## 1️⃣ 현재 자산 (부모님)")
+        st.markdown("#### 1️⃣ 현재 자산 (부모님)")
         real_estate_billions = st.number_input("🏠 부동산 (단위: 억)", value=30, step=1)
         financial_billions = st.number_input("💰 금융/동산 (단위: 억)", value=10, step=1)
         total_estate = (real_estate_billions + financial_billions) * 100000000
@@ -376,5 +376,6 @@ def app(input_col):
         is_liquidity_crisis="위험(흑자부도)" if liquidity_crisis else "안전", # 유동성 위기 여부
         shortage_amount=shortage                            # 부족한 현금 액수 (원)
     )
+
 
 
