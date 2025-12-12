@@ -6,7 +6,7 @@ st.set_page_config(page_title="Services - Kfit", page_icon="🚀", layout="wide"
 
 hide_header()
 
-# [CSS] 사이드바 숨김 & 스타일링 (기존 유지)
+# [CSS] 사이드바 숨김 & 스타일링 
 st.markdown("""
     <style>
     [data-testid="stSidebar"] { display: none; }
@@ -18,22 +18,21 @@ st.markdown("""
         padding: 0px !important; 
     }
 
-    /* 기본 상태: 약간 작게 + 여유 패딩 + 부드러운 전환 */
+    /* 기본 상태 */
     [data-testid="stPageLink-NavLink"] p { 
-        font-size: 1.2rem;            /* 기본 크기 */
+        font-size: 1.2rem;            
         font-weight: 600; 
-        color: #444; 
-        padding: 4px 6px;             /* 박스를 조금 크게 */
+        color: var(--text-color); /* 다크/라이트 모드 자동 대응 */
+        padding: 4px 6px;             
         margin: 0; 
-        transition: all 0.15s ease-in-out;  /* 부드럽게 커지도록 */
+        transition: all 0.15s ease-in-out; 
     }
 
-    /* 호버 상태: 글자 크기만 키우기 (scale 대신) */
+    /* 호버 상태: 크기 변화 제거하여 울렁거림 방지, Primary Color로 통일 */
     [data-testid="stPageLink-NavLink"]:hover p { 
-        color: #1E3A8A; 
-        font-weight: 900; 
-        /*font-size: 1.3rem;             여기서 살짝만 키움 */
-        /* transform: scale(1.05);  ← 이 줄은 제거 */
+        color: var(--primary-color) !important; /* 초록색 계열로 변경하여 대비 및 강조 */
+        font-weight: 900 !important; 
+        font-size: 1.2rem;            
     }
 
     .block-container { padding-top: 1rem !important; }
@@ -42,22 +41,23 @@ st.markdown("""
 
 
 # ==============================================================================
-# [NEW] URL 꼬리표(Query Params) 감지 로직
+# URL 꼬리표(Query Params) 감지 로직 - [수정됨] 순서 변경 반영
 # ==============================================================================
 # 1. URL에서 '?tool=xxx' 값을 가져옵니다.
 query_params = st.query_params
-target_tool = query_params.get("tool", "life")  # 없으면 기본값 'life'
+target_tool = query_params.get("tool", "life")  # [요청 반영] 기본값 'life' 유지
 
 # 2. 꼬리표와 셀렉트박스 순서 매핑
-tool_options = ["Wannabe Golf", "Wannabe Tax", "Wannabe Life Plan"]
+# [수정] 요청하신 대로 Life Plan이 Index 0이 되도록 순서를 변경
+tool_options = ["Wannabe Life Plan", "Wannabe Tax", "Wannabe Golf"]
 tool_map = {
-    "golf": 0,  # Wannabe Golf
-    "tax": 1,   # Wannabe Tax
-    "life": 2   # Wannabe Life Plan
+    "life": 0,  # [수정] Life Plan이 Index 0
+    "tax": 1,   # [수정] Tax가 Index 1
+    "golf": 2   # [수정] Golf가 Index 2
 }
 
-# 3. 선택해야 할 인덱스 찾기 (오타나 엉뚱한 값이면 0번 골프)
-default_idx = tool_map.get(str(target_tool).lower(), 2)
+# 3. 선택해야 할 인덱스 찾기 (오타나 엉뚱한 값이면 0번 Life Plan)
+default_idx = tool_map.get(str(target_tool).lower(), 0) # [수정] 기본 인덱스를 0 (Life Plan)로 변경
 
 # ==============================================================================
 # 화면 분할 및 실행
@@ -78,7 +78,7 @@ with left_col:
     selected_app = st.selectbox(
         "솔루션 선택", 
         tool_options, 
-        index=default_idx,  # 여기가 핵심! URL에 따라 기본 선택이 바뀜
+        index=default_idx, 
         label_visibility="collapsed"
     )
     st.markdown("---")
@@ -93,10 +93,3 @@ with right_col:
         Wannabe_Life_Plan.app(left_col)
 
 show_footer()
-
-
-
-
-
-
-
