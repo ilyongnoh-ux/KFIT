@@ -294,14 +294,19 @@ def app(input_col):
 
     fig = go.Figure()
 
-    # 1. 배경: 총 자산
+# 1. 배경: 총 자산
     fig.add_trace(go.Scatter(
-        x=df_chart["Year"], y=df_chart["RealEstate"] + df_chart["Financial"],
-        mode='lines', name='총 자산',
+        x=df_chart["Year"],
+        y=df_chart["RealEstate"] + df_chart["Financial"],
+        mode='lines',
+        name='총 자산',
         line=dict(width=1, color='rgba(160, 160, 160, 0.5)'),
-        fill='tozeroy', fillcolor='rgba(128, 128, 128, 0.3)',
-        hoverinfo='skip'
+        fill='tozeroy',
+        fillcolor='rgba(128, 128, 128, 0.3)',
+        # 🔧 여기 수정: hoverinfo 대신 hovertemplate 사용
+        hovertemplate="<b>%{x}년 후</b><br>총자산: %{y:.1f}억<extra></extra>"
     ))
+
 
     # 2. 기준선: 금융자산 (보유 현금)
     fig.add_trace(go.Scatter(
@@ -376,16 +381,3 @@ def app(input_col):
         is_liquidity_crisis="위험(흑자부도)" if liquidity_crisis else "안전", # 유동성 위기 여부
         shortage_amount=shortage                            # 부족한 현금 액수 (원)
     )
-
-
-
-
-
-
-
-
-
-
-
-
-

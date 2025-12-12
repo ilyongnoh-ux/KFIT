@@ -356,44 +356,106 @@ def app(input_col):
     st.subheader("📈 자산별 생애 궤적")
     
     fig = go.Figure()
+
+    # 1) 부동산(순자산) - hover 텍스트 1, 2줄 담당
     fig.add_trace(go.Scatter(
-        x=ages, y=liq_norm, name='현금 자산',
-        line=dict(color='#2e7d32', width=4), mode='lines',
-        hovertemplate='<b>%{x}세</b><br>현금: %{y:.1f}억<extra></extra>'
-    ))
-    fig.add_trace(go.Scatter(
-        x=ages, y=re_norm, name='부동산(순자산)',
+        x=ages,
+        y=re_norm,
+        name='부동산(순자산)',
         line=dict(color='#8d6e63', width=3, dash='dash'),
-        fill='tozeroy', fillcolor='rgba(141, 110, 99, 0.1)',
-        hovertemplate='<b>%{x}세</b><br>부동산: %{y:.1f}억<extra></extra>'
+        fill='tozeroy',
+        fillcolor='rgba(141, 110, 99, 0.1)',
+        hovertemplate="<b>%{x}세</b><br>부동산(순자산): %{y:.1f}억<extra></extra>"
     ))
+
+    # 2) 현금 자산 - hover 텍스트 3줄 담당
+    fig.add_trace(go.Scatter(
+        x=ages,
+        y=liq_norm,
+        name='현금 자산',
+        line=dict(color='#2e7d32', width=4),
+        mode='lines',
+        hovertemplate="현금 자산: %{y:.1f}억<extra></extra>"
+    ))
+
+    # 기준선 (0억)
     fig.add_shape(
-        type="line", x0=age_curr, y0=0, x1=age_death, y1=0,
+        type="line",
+        x0=age_curr, y0=0,
+        x1=age_death, y1=0,
         line=dict(color="red", width=1)
     )
 
+    # 부동산 매각 시점 말풍선
     for p in st.session_state.properties:
         if "매각" in p['strategy'] and p['sell_age'] <= age_death:
             idx = p['sell_age'] - age_curr
             if 0 <= idx < len(liq_norm):
                 fig.add_annotation(
-                    x=p['sell_age'], y=liq_norm[idx],
-                    text=f"↗ {p['name']}", showarrow=True,
-                    arrowhead=2, ay=-30,
+                    x=p['sell_age'],
+                    y=liq_norm[idx],
+                    text=f"↗ {p['name']}",
+                    showarrow=True,
+                    arrowhead=2,
+                    ay=-30,
                     font=dict(color="#2e7d32", size=10)
                 )
 
+    # hover 시 점선 + unified 박스 (원래 설정 유지했다면 여기에)
     fig.update_layout(
-        template="plotly_white", height=400,
+        template="plotly_white",
+        height=400,
         margin=dict(l=20, r=20, t=50, b=50),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom", y=1.02,
+            xanchor="right", x=1
+        ),
         dragmode=False,
-        xaxis=dict(fixedrange=True, title="경과나이 (세)"),
-        yaxis=dict(fixedrange=True, title="금액단위 (억원)")
+        xaxis=dict(
+            fixedrange=True,
+            title="경과나이 (세)",
+            showspikes=True,
+            spikemode="across",
+            spikethickness=1.5,
+            spikedash="dot",
+            spikecolor="rgba(120,120,120,0.8)",
+        ),
+        yaxis=dict(
+            fixedrange=True,
+            title="금액단위 (억원)",
+            showspikes=True,
+            spikemode="across",
+            spikethickness=1.5,
+            spikedash="dot",
+            spikecolor="rgba(120,120,120,0.4)",
+        ),
+        hovermode="x unified",
+        hoverlabel=dict(
+            bgcolor="rgba(255, 255, 255, 0.9)",
+            font_size=12,
+            font_color="black",
+        ),
     )
-    st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False, 'scrollZoom': False})
 
-    st.divider()
+    st.plotly_chart(
+        fig,
+        use_container_width=True,
+        config={'displayModeBar': False, 'scrollZoom': False}
+    )
+
+    st.info("""
+    💡 **그래프 해석 가이드**
+
+    1. **갈색 점선 + 음영** → 부동산 순자산
+    2. **초록 실선** → 현금 자산(유동자산)
+    3. **빨간 가로선(0억)** → 현금/자산 기준선
+    4. 마우스를 올리면
+       **64세 → 부동산(순자산) → 현금 자산** 순으로
+       한 박스에 정리되어 표시됩니다.
+    """)
+
+
 
     # ==============================================================================
     # 4. 심층 분석 및 상담 신청
@@ -514,10 +576,3 @@ def app(input_col):
         DataModelClass=LifeData,
         **simulation_data
     )
-
-
-
-
-
-
-
