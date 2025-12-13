@@ -199,8 +199,8 @@ def app(input_col):
         # 2-2. 금융 자산
         with st.expander("2. 금융 자산 (Finance)", expanded=False): 
             c1, c2 = st.columns(2)
-            liquid_asset = c1.number_input("유동자산(억)", 0.0, 100.0, 3.0)
-            monthly_save = c2.number_input("월 저축(만원)", 0, 10000, 300)
+            liquid_asset = c1.number_input("유동자산(억)", 0.0, 100.0, 3.0, step=0.1)
+            monthly_save = c2.number_input("월 저축(만원)", 0, 10000, 300, step=10)
             return_rate_int = st.slider("투자 수익률(%)", 0, 15, 4, step=1)
             return_rate = return_rate_int / 100
 
