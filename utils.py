@@ -42,7 +42,6 @@ def hide_sidebar():
 
 def show_footer():
     '''공통 풋터'''
-    #st.markdown("""<div style='margin-top: 80px; padding: 30px; border-top: 1px solid #eee; text-align: center; color: #888; font-size: 0.9rem; background-color: #f9f9f9;'><b>Korea Financial Investment Technology(KFIT)®</b> | 문의: 010-6255-9978 <br> Copyright © 2025 WannabeDream® Solution. All rights reserved.</div>""", unsafe_allow_html=True)
     st.markdown(
         """
         <style>
@@ -52,15 +51,27 @@ def show_footer():
             bottom: 0;
             width: 100%;
             text-align: center;
-            padding: 8px 0;
-            font-size: 0.85rem;
+            padding: 10px 0;
+            
             color: rgba(255, 255, 255, 0.85);
-            background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0));
+            background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0));
             z-index: 999;
+            
+            /* [핵심 수정 1] 반응형 폰트 크기: 화면 폭에 따라 폰트가 자동으로 줄어듭니다.
+               최소 10px, 권장 3.2vw(화면폭의 3.2%), 최대 0.85rem */
+            font-size: clamp(10px, 3.2vw, 0.85rem);
+            
+            /* [핵심 수정 2] 강제 줄바꿈 방지: <br> 태그 외에는 줄이 바뀌지 않습니다. */
+            white-space: nowrap;
+            
+            /* 혹시라도 글자가 화면을 넘어갈 경우를 대비한 안전장치 */
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         </style>
         <div class="kfit-footer">
-            본 사이트의 모든 컨텐츠는 저작권법의 보호를 받으므로 무단 전재, 복사, 배포를 금합니다. <br> Copyright © 2025 Korea Financial Investment Technology(KFIT)® All rights reserved.
+            본 사이트의 모든 컨텐츠는 저작권법의 보호를 받으므로 무단 전재, 복사, 배포를 금합니다. <br> 
+            Copyright © 2025 Korea Financial Investment Technology(KFIT)® All rights reserved.
         </div>
         """,
         unsafe_allow_html=True,
