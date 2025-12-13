@@ -2,38 +2,72 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from datetime import datetime
-from utils import send_data_to_api, render_common_form # [NEW] render_common_form 추가
+from utils import send_data_to_api, render_common_form 
 from models import GolfData
 
 def app(input_col):
     # --------------------------------------------------------------------------
-    # [UI 함수] 원본 그대로 유지
+    # [UI 함수] 통일된 스타일 적용 및 함수 단순화
     # --------------------------------------------------------------------------
-    def responsive_text(text, type="title"):
-        """화면 너비(vw)를 기준으로 폰트 크기를 최대한 키움 (Max Width)"""
+    st.markdown("""
+        <style>
+        /* 메인 타이틀 색상을 Primary Color로 통일 (다크모드 대응) */
+        .responsive-title { 
+            font-size: clamp(1.8rem, 6vw, 4rem); 
+            font-weight: 900; 
+            color: var(--primary-color); /* 브랜드 색상 통일 */
+            white-space: nowrap; 
+            text-align: center; 
+            line-height: 1.2;
+            margin-bottom: 20px; 
+        }
+        /* 좌측 프레임 제목 스타일 (Life Plan과 통일) */
+        .sidebar-title { 
+            font-size: clamp(1.2rem, 13cqw, 2.5rem); 
+            font-weight: 900; 
+            color: var(--primary-color); 
+            text-align: center; 
+        } 
+        /* 입력 항목 캡션 및 라벨 폰트 크기 통일 */
+        .stSlider label p, .stNumberInput label p, .stSelectbox label p {
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem) !important;
+            font-weight: 500;
+        }
+        /* 결과 텍스트 */
+        .result_unified { 
+            font-size: clamp(20px, 6vw, 40px); 
+            font-weight: 900; 
+            line-height: 1.3; 
+            letter-spacing: -1px; 
+            text-align: center; 
+        }
+        /* 서브헤더 (자산 현황) 중앙 정렬 스타일 */
+        .subheader_golf {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            font-weight: 700;
+            text-align: center; 
+            margin-top: 40px; 
+            margin-bottom: 10px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+    
+    # 함수를 CSS 기반으로 단순화
+    def display_title(text, type="title"):
         if type == "title":
-            style = "font-size: clamp(24px, 9vw, 50px); font-weight: 800; margin-bottom: 15px; white-space: nowrap; line-height: 1.2;"
-            div_style = "margin-bottom: 10px;"
-        elif type == "result_unified":
-            style = "font-size: clamp(20px, 6vw, 40px); font-weight: 900; line-height: 1.3; letter-spacing: -1px;" 
-            div_style = "margin: 5px 0;"
-        elif type == "subheader_one_line":
-            style = "font-size: clamp(18px, 6.5vw, 35px); font-weight: 700; white-space: nowrap;"
-            div_style = "margin-top: 40px; margin-bottom: 10px;"
+            st.markdown(f'<div class="responsive-title">{text}</div>', unsafe_allow_html=True)
+        elif type == "result":
+            st.markdown(f'<div class="result_unified">{text}</div>', unsafe_allow_html=True)
+        elif type == "subheader":
+             st.markdown(f'<div class="subheader_golf">{text}</div>', unsafe_allow_html=True) 
         else:
-            style = "font-size: 16px;"
-            div_style = ""
+            st.markdown(f'<div>{text}</div>', unsafe_allow_html=True)
             
-        st.markdown(f"""<div style="display: flex; justify-content: center; width: 100%; text-align: center; {div_style}"><span style="{style}">{text}</span></div>""", unsafe_allow_html=True)
-
+    # [UX] 결과 해설 박스 (원본 유지)
     def emphasized_box(msg, status="SAFE"):
-        """결과 해설 박스"""
-        if status == "DANGER":
-            bg_color = "#FF4B4B"; icon = "🚨"
-        elif status == "WARNING":
-            bg_color = "#FFA421"; icon = "⚠️"
-        else:
-            bg_color = "#3DD56D"; icon = "🎉"
+        if status == "DANGER": bg_color = "#FF4B4B"; icon = "🚨"
+        elif status == "WARNING": bg_color = "#FFA421"; icon = "⚠️"
+        else: bg_color = "#3DD56D"; icon = "🎉"
             
         st.markdown(f"""
         <div style="background-color: {bg_color}; padding: 25px; border-radius: 15px; margin-top: 20px; margin-bottom: 30px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
@@ -73,14 +107,12 @@ def app(input_col):
     # [UI] 입력창 배치 (왼쪽 프레임 input_col 로 이동)
     # --------------------------------------------------------------------------
     with input_col:
-        st.markdown(
-            """
-            <h3 style="text-align:center; margin-bottom: 0.8rem;">
-                🏌️‍♂️ Life Style
-            </h3>
-            """,
-            unsafe_allow_html=True,
-        )
+        # Client Info 타이틀
+        st.markdown("""
+            <div class="sidebar-container">
+                <h3 class="sidebar-title">🏌️‍♂️ Client Info</h3>
+            </div>
+        """, unsafe_allow_html=True)
     
         current_age = st.number_input("현재 나이", value=54, min_value=30, max_value=80)
         retire_age = st.slider("은퇴 예정 나이", 50, 75, 60)
@@ -90,29 +122,20 @@ def app(input_col):
             options=[20, 30, 35, 40, 50, 70],
             value=35,
         ) * 10000
-    #with input_col:
-    #    st.subheader("🏌️‍♂️Life Style")
-    #    current_age = st.number_input("현재 나이", value=54, min_value=30, max_value=80)
-    #    retire_age = st.slider("은퇴 예정 나이", 50, 75, 60)
-    #    rounds = st.slider("월 라운딩 횟수 (회)", 0, 10, 4)
-    #    cost = st.select_slider("회당 비용 (그늘집 포함)", options=[20, 30, 35, 40, 50, 70], value=35) * 10000
         
         st.divider()
-        st.markdown(
-            """
-            <h3 style="text-align:center; margin-bottom: 0.8rem;">
-                💰 자산 현황
-            </h3>
-            """,
-            unsafe_allow_html=True,
-        )
-        assets = st.slider("현재 골프 자금 (만원)", 0, 50000, 10000, step=1000) * 10000
+        
+        display_title("💰 자산 현황", type="subheader") # CSS 기반 서브헤더 (중앙 정렬됨)
+        
+        # [수정 완료] 억 단위로 변경
+        assets_eok = st.slider("현재 골프 자금 (억)", 0.0, 5.0, 1.0, step=0.1, format="%.1f") 
+        assets = assets_eok * 100000000 # 원 단위로 환산하여 계산에 사용
         saving = st.slider("월 추가 저축액 (만원)", 0, 500, 0, step=10) * 10000
 
     # --------------------------------------------------------------------------
     # [UI] 메인 결과 화면 (오른쪽 프레임)
     # --------------------------------------------------------------------------
-    responsive_text("⛳ Golf Life Checkup", type="title")
+    display_title("⛳ Golf Life Checkup", type="title") # CSS 기반 타이틀
     st.markdown("<div style='text-align: center; opacity: 0.7; font-size: 1.0em; margin-bottom: 25px;'>👇 좌측 메뉴의 값을 조정하여 미래를 확인하세요</div>", unsafe_allow_html=True)
     st.divider()
 
@@ -121,8 +144,8 @@ def app(input_col):
     bankruptcy_age, status, df_history = calculate_golf_life(current_age, retire_age, target_age, assets, saving, rounds, cost)
 
     # 결과 표시
-    responsive_text("📊 진단 결과", type="result_unified")
-    responsive_text(f"예상 골프 수명: {bankruptcy_age}세", type="result_unified")
+    display_title("📊 진단 결과", type="result") # CSS 기반 결과
+    display_title(f"예상 골프 수명: {bankruptcy_age}세", type="result") # CSS 기반 결과
 
     total_years = target_age - current_age
     survive_years = bankruptcy_age - current_age
@@ -153,7 +176,7 @@ def app(input_col):
         st.markdown(f"<div style='text-align: center; font-size: 1.2em; font-weight: bold; color: gray;'>📈 자금은 충분합니다. 이제 건강을 지키세요.</div>", unsafe_allow_html=True)
 
     # --------------------------------------------------------------------------
-    # [수정됨] 공통 상담 폼 호출 (이전의 긴 코드가 이 한 줄로 대체됨)
+    # 공통 상담 폼 호출
     # --------------------------------------------------------------------------
     render_common_form(
         app_type="golf",
@@ -167,8 +190,4 @@ def app(input_col):
         cost=cost,
         bankruptcy_age=bankruptcy_age,
         result_msg=result_msg
-
     )
-
-
-
